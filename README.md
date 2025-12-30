@@ -1,6 +1,6 @@
 # get-icmp9-node
 
-获取ICMP9 Clash节点。
+获取ICMP9 Clash订阅链接。
 
 **🌴效果**：![IMG_20251230_164516_402.jpg](https://twilight.vvvv.ee/file/1767084365963_IMG_20251230_164516_402.jpg)
 
