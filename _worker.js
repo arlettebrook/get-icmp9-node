@@ -175,7 +175,7 @@ label {
   color: var(--sub);
 }
 
-input, select {
+input {
   width: 100%;
   margin-top: 6px;
   padding: 12px;
@@ -237,13 +237,7 @@ button {
   <input id="port" value="443"/>
 
   <label>Server Name (SNI)</label>
-  <input id="servername"/>
-
-  <label>TLS</label>
-  <select id="tls">
-    <option value="true">true</option>
-    <option value="false">false</option>
-  </select>
+  <input id="servername" value="tunnel.icmp9.com"/>
 
   <button onclick="gen()">生成订阅链接</button>
   <button class="copy" onclick="copy()">📋 复制订阅链接</button>
@@ -255,30 +249,40 @@ button {
 const $ = id => document.getElementById(id);
 let currentUrl = "";
 
+// 生成订阅
 function gen() {
   const uuid = $('uuid').value.trim();
-  if (!uuid) return alert("UUID 不能为空");
+  if (!uuid) {
+    alert("UUID 不能为空");
+    return;
+  }
 
+  // 保存 UUID
   localStorage.setItem("uuid", uuid);
 
   const server = $('server').value;
   const port = $('port').value;
-  const servername = $('servername').value || server;
-  const tls = $('tls').value;
+  const servername = $('servername').value || "tunnel.icmp9.com";
 
+  // TLS 始终为 true
   currentUrl =
-    '${origin}/?uuid=' + encodeURIComponent(uuid) +
-    '&server=' + encodeURIComponent(server) +
-    '&port=' + encodeURIComponent(port) +
-    '&servername=' + encodeURIComponent(servername) +
-    '&tls=' + tls;
+    location.origin +
+    "/?uuid=" + encodeURIComponent(uuid) +
+    "&server=" + encodeURIComponent(server) +
+    "&port=" + encodeURIComponent(port) +
+    "&servername=" + encodeURIComponent(servername) +
+    "&tls=true";
 
   $('result').innerHTML =
     '<a href="' + currentUrl + '" target="_blank">' + currentUrl + '</a>';
 }
 
+// 复制订阅
 function copy() {
-  if (!currentUrl) return alert("请先生成订阅链接");
+  if (!currentUrl) {
+    alert("请先生成订阅链接");
+    return;
+  }
   navigator.clipboard.writeText(currentUrl).then(() => {
     alert("已复制到剪贴板");
   });
@@ -294,13 +298,15 @@ function toggleTheme() {
   const next = html.dataset.theme === "dark" ? "light" : "dark";
   html.dataset.theme = next;
   localStorage.setItem("theme", next);
-  document.querySelector(".toggle").textContent = next === "dark" ? "🌙" : "☀️";
+  document.querySelector(".toggle").textContent =
+    next === "dark" ? "🌙" : "☀️";
 }
 
 // 主题记忆
 const theme = localStorage.getItem("theme") || "dark";
 document.documentElement.dataset.theme = theme;
-document.querySelector(".toggle").textContent = theme === "dark" ? "🌙" : "☀️";
+document.querySelector(".toggle").textContent =
+  theme === "dark" ? "🌙" : "☀️";
 </script>
 </body>
 </html>`;
