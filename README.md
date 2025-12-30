@@ -34,3 +34,4 @@
   - 提示：可以用ICMP9提供的免费VPS搭建前置代理节点。
 - 其他方法
   - 参考：https://www.nodeloc.com/t/topic/72682 （本项目出处）
+  - 不需要前置代理方法：https://github.com/nap0o/icmp9.com
