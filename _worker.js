@@ -363,7 +363,7 @@ function gen() {
     "&tls=true";
 
   $('result').innerHTML =
-    `<a href="${currentUrl}" target="_blank">${currentUrl}</a>`;
+  '<a href="' + currentUrl + '" target="_blank">' + currentUrl + '</a>';
 }
 
 /* =====================
