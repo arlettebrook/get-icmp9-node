@@ -151,7 +151,7 @@ Cloudflare tunnel手动创建即可，不会网上找教程（很简单）。
  
 其他方法
   - 参考：https://www.nodeloc.com/t/topic/72682 （本项目出处）
-  - 不需要前置代理方法（**一键脚本**）推荐：https://github.com/nap0o/icmp9.com
+  - 不需要前置代理方法（**一键脚本**）「小白推荐」：https://github.com/nap0o/icmp9.com/tree/nginx
 
 ---
 
