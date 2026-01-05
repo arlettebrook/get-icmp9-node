@@ -45,6 +45,7 @@
 方法二：反向代理
 
 Nginx反代实例：
+`/etc/nginx/conf.d/icmp9.conf`
 ```conf
 server {
     listen 8080;
@@ -90,8 +91,52 @@ server {
 
 方法三：反向代理 ➕ Cloudflare tunnel ➕ 优选IP（推荐）
 
+Nginx反代实例：
+```conf
+server {
+    listen 8080;
+    listen [::]:8080;
+    server_name localhost;
 
-反代和隧道都搭建好之后，访问 ICMP9订阅生成器：
+    resolver 8.8.8.8 1.1.1.1 valid=300s;
+    client_max_body_size 1G;
+    proxy_request_buffering off;
+    proxy_buffering off;
+
+    location / {
+        proxy_pass https://tunnel.icmp9.com;
+        proxy_ssl_server_name on;
+
+        proxy_set_header Host tunnel.icmp9.com;
+
+        proxy_set_header X-Real-IP "";
+        proxy_set_header X-Forwarded-For "";
+        proxy_set_header X-Forwarded-Proto "";
+        proxy_set_header Forwarded "";
+        proxy_set_header Via "";
+
+        # 防止 Nginx 自动加
+        proxy_hide_header X-Powered-By;
+
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 86400;
+        proxy_send_timeout 86400;
+    }
+}
+```
+VPS安装了最新版Nginx之后，只需要将上面内容保存到`/etc/nginx/conf.d/icmp9.conf`，重启Nginx即可。
+
+Cloudflare tunnel手动创建即可，不会网上找教程（很简单）。
+- 注意URL为localhost + Nginx监听的端口，如上面的就是`localhost:8080`
+
+
+
+反代和隧道都搭建好之后（别忘了放行IP），访问ICMP9订阅生成器：
 - 将`Server`替换成优选IP或优选域名
 - `port`保持默认`443`
 - 将`Server Name`替换成Cloudflare tunnel绑定的域名。如：`www.example.com`
